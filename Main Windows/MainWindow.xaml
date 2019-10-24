@@ -105,8 +105,15 @@
                 <Button Content="Add" Grid.Column="0"/>
                 <Button Content="Arrows" Grid.Column="1"/>
             </Grid>
-            <ListView Grid.Row="2">
-                
+            <ListView Grid.Row="2" >
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn Header="Filename" Width="150"/>
+                        <GridViewColumn Header="New Filename" Width="150"/>
+                        <GridViewColumn Header="Path" Width="200"/>
+                        <GridViewColumn Header="Error" Width="300"/>
+                    </GridView>
+                </ListView.View>
             </ListView>
         </Grid>
     </Grid>

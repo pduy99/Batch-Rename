@@ -8,6 +8,8 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
+using System.Windows;
+
 namespace Main_Windows.Properties
 {
 
@@ -67,5 +69,8 @@ namespace Main_Windows.Properties
                 resourceCulture = value;
             }
         }
+      
     }
+
+
 }
