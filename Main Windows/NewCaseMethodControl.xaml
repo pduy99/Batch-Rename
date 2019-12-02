@@ -1,0 +1,18 @@
+﻿<Window x:Class="Main_Windows.NewCaseMethodControl"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Main_Windows"
+        mc:Ignorable="d"
+        Title="NewCaseMethodControl" Height="150" Width="400">
+    <Canvas>
+        <TextBlock Text="Choose the style: " FontWeight="SemiBold" Canvas.Top="35" Canvas.Left="43"/>
+        <ComboBox Name="NewCaseStyleCombobox" Width="214" Height="22" Canvas.Left="144" Canvas.Top="31">
+            <ComboBoxItem Content="All Uppercase" VerticalAlignment="Center"/>
+            <ComboBoxItem Content="All LowerCase" VerticalAlignment="Center"/>
+            <ComboBoxItem Content="Capitalize the first letter each word" VerticalAlignment="Center" IsSelected="True"/>
+        </ComboBox>
+        <Button Click="Button_Click" Content="Apply" Width="80" Height="25" Canvas.Left="156" Canvas.Top="86"/>
+    </Canvas>
+</Window>

@@ -6,8 +6,24 @@
         xmlns:local="clr-namespace:Main_Windows"
         mc:Ignorable="d"
         Title="Batch Rename by Helios" Height="700" Width="1200"
-        Loaded="Window_Loaded">
-    <Grid ShowGridLines="True">
+        Loaded="Window_Loaded"
+        Background="#F2FBFD">
+    <Window.Resources>
+        <BitmapImage x:Key="Plus" UriSource="Images/plus.png" />
+        <BitmapImage x:Key="Minus" UriSource="Images/minus.png" />
+        <DataTemplate x:Key="MyDataTemplate">
+            <Border BorderBrush="Gray" BorderThickness="1,1,0,0" Margin="-6,-2,-6,-2">
+                <StackPanel Margin="6,2,6,2">
+                    <TextBlock Text="{Binding MySpecialBinding}"/>
+                </StackPanel>
+            </Border>
+        </DataTemplate>
+        <Style x:Key="MyItemContainerStyle" TargetType="{x:Type ListViewItem}">
+            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+            <Setter Property="VerticalContentAlignment" Value="Stretch"/>
+        </Style>
+    </Window.Resources>
+    <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
             <RowDefinition Height="15*"/>
@@ -17,104 +33,302 @@
             <ColumnDefinition Width="2*"/>
         </Grid.ColumnDefinitions>
         <!--Start of Toolbar-->
-        <Grid ShowGridLines="True" Grid.Column="0" Grid.Row="0">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="1.5*"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
-            <Button Content="Refresh" Grid.Row="0" Grid.Column="0"></Button>
-            <Button Content="Help" Grid.Row="0" Grid.Column="1"></Button>
-            <Button Content="Start Batch" Grid.Row="0" Grid.Column="2"></Button>
-        </Grid>
+        <Border BorderThickness="1" BorderBrush="LightGray" Grid.ColumnSpan="2">
+            <ToolBarTray Grid.ColumnSpan="2"  >
+                <ToolBar>
+                    <Separator></Separator>
+                    <Button Name="btnRefresh" Click="RefreshButton_Click_1" Width="100">
+                        <StackPanel Orientation="Horizontal" Height="35" Width="84">
+                            <Image Source="Images/refresh.png" HorizontalAlignment="Left"/>
+                            <TextBlock Text="Refresh" VerticalAlignment="Center" FontWeight="SemiBold" Margin="5"/>
+                        </StackPanel>
+                    </Button>
+                    <Separator></Separator>
+                    <Button Name="btnHelp" Click="BtnHelp_Click" Width="100" >
+                        <StackPanel Orientation="Horizontal" Height="35" Width="84">
+                            <Image Source="Images/help.png" HorizontalAlignment="Left"/>
+                            <TextBlock Text="Help" VerticalAlignment="Center" FontWeight="SemiBold" Margin="5"/>
+                        </StackPanel>
+                    </Button>
+                    <Separator></Separator>
+                    <Button Name="btnStartBatch" Click="BtnStartBatch_Click" Width="110">
+                        <StackPanel Orientation="Horizontal" Height="35" Width="110">
+                            <Image Source="Images/play.png" HorizontalAlignment="Left"/>
+                            <TextBlock Text="Start Batch" VerticalAlignment="Center" FontWeight="SemiBold" Margin="5"/>
+                        </StackPanel>
+                    </Button>
+                </ToolBar>
+            </ToolBarTray>
+        </Border>
         <!--End of Toolbar -->
         <!--Start of Menu bar-->
-        <Grid ShowGridLines="True" Grid.Column="0" Grid.Row="1">
-            <Grid ShowGridLines="True">
+        <Grid Grid.Column="0" Grid.Row="1">
+            <Grid >
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="*"/>
-                    <RowDefinition Height="*"/>
-                    <RowDefinition Height="*"/>
-                    <RowDefinition Height="*"/>
-                    <RowDefinition Height="*"/>
-                    <RowDefinition Height="*"/>
-                    <RowDefinition Height="*"/>
-                    <RowDefinition Height="2*"/>
-                    <RowDefinition Height="3*"/>
+                    <RowDefinition Height="11*"/>
                 </Grid.RowDefinitions>
-                <!--Row 1-->
-                <Grid ShowGridLines="True" Grid.Row="0">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="1.5*"/>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="1.5*"/>
-                    </Grid.ColumnDefinitions>
-                    <Button Content="Add Method" Grid.Column="0"/>
-                    <Button Content="Clear" Grid.Column="1"/>
-                    <Button Content="Arrows" Grid.Column="2"/>
-                </Grid>
-                <!--Row 2-->
-                <Grid ShowGridLines="True" Grid.Row="1">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="4*"/>
-                    </Grid.ColumnDefinitions>
-                    <Button Content="Icon save" Grid.Column="0"/>
-                    <Button Content="Presets" Grid.Column="1"/>
-                </Grid>
-                <!--Row 3-->
-                <Button Content="New Case" Grid.Row="2"></Button>
-                <!--Row 4-->
-                <Button Content="Move" Grid.Row="3"></Button>
-                <!--Row 5-->
-                <Button Content="Remove Pattern" Grid.Row="4"></Button>
-                <!--Row 6-->
-                <Button Content="Replace" Grid.Row="5"></Button>
-                <!--Row 7-->
-                <Button Content="Trim" Grid.Row="6"></Button>
-                <!--Row 8-->
-                <Button Content="New Name" Grid.Row="7"></Button>
-                <!--Row 9-->
-                <Button Content="Apply to" Grid.Row="8"></Button>
+                <!--Method Row-->
+                <Border BorderBrush="LightGray" BorderThickness="1">
+                    <ToolBarTray>
+                        <ToolBar>
+                            <Separator/>
+                            <Image Source="Images/add.png" Width="35" VerticalAlignment="Center"/>
+                            <StackPanel Orientation="Vertical" Width="100" Margin="0,0,5,0">
+                                <TextBlock Text="Add Methods" FontWeight="SemiBold" VerticalAlignment="Top" HorizontalAlignment="Center"/>
+                                <ComboBox SelectionChanged="MethodCombobox_SelectionChanged"  Name="MethodCombobox" >
+                                    <ComboBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding Name,Mode=OneWay}"/>
+                                        </DataTemplate>
+                                    </ComboBox.ItemTemplate>
+                                </ComboBox> 
+                            </StackPanel>
+                            <Separator/>
+                            <Button  Click="BtnClearMethod_Click">
+                                <StackPanel Orientation="Horizontal" Margin="0,0,10,0">
+                                    <Image Source="Images/clear.png" Width="35"/>
+                                    <TextBlock Text="Clear" VerticalAlignment="Center" FontWeight="SemiBold" />
+                                </StackPanel>
+                            </Button>
+                            <Separator/>
+                            <StackPanel Orientation="Horizontal">
+                                <Button Click="btnUpMethodPosition" BorderThickness="0" Background="Transparent" >
+                                    <Image Source="Images/up.png" Width="30"/>
+                                </Button>
+                                <Button Click="btnUpMostMethodPosition" BorderThickness="0" Background="Transparent" >
+                                    <Image Source="Images/up_most.png" Width="30"/>
+                                </Button>
+                                <Button Click="btnDownMethodPosition" BorderThickness="0" Background="Transparent" >
+                                    <Image Source="Images/down.png" Width="30"/>
+                                </Button>
+                                <Button Click="btnDownMostMethodPosition" BorderThickness="0" Background="Transparent" >
+                                    <Image Source="Images/down_most.png" Width="30"/>
+                                </Button>
+                            </StackPanel>
+                        </ToolBar>
+                    </ToolBarTray>
+                </Border>
+                <!--Preset Row-->
+                <Border Grid.Row="1" BorderBrush="LightGray" BorderThickness="1">
+                    <ToolBarTray Grid.Row="1">
+                        <ToolBar Height="50">
+                            <Separator/>
+                            <Button Click="btnSavePreset" Background="Transparent" BorderThickness="0">
+                                <StackPanel Orientation="Horizontal">
+                                    <Image Source="Images/save_preset.png" Width="35"/>
+                                    <TextBlock Text="Save Preset" FontWeight="SemiBold" VerticalAlignment="Center" Margin="5,0,0,0"/>
+                                </StackPanel>
+                            </Button>
+                            <Separator/>
+                            <StackPanel Width="220" Orientation="Horizontal">
+                                <TextBlock Text="Preset:" FontWeight="SemiBold" VerticalAlignment="Center" Margin="10,0,10,0"/>
+                                <ComboBox Name="PresetCombobox" Width="150" Height="25">
+                                    
+                                </ComboBox>
+                            </StackPanel>
+                        </ToolBar>
+                    </ToolBarTray>
+                </Border>
+                <ListBox  Name="operationListBox" Grid.Row="2" Background="#E0E0E0" HorizontalContentAlignment="Stretch" SelectionMode="Extended">
+                    <ListBox.Resources>
+                        <Style TargetType="ListBoxItem">
+                            <Style.Triggers>
+                                <Trigger Property="IsKeyboardFocusWithin" Value="True">
+                                    <Setter Property="IsSelected" Value="True"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </ListBox.Resources>
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            
+                            <Grid Margin="2">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="4*"/>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="4*"/>
+                                    <ColumnDefinition Width="0.5*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Border Name="border" BorderBrush="Black" BorderThickness="2" Grid.ColumnSpan="4" Grid.Row="0">
+                                    <Border.Style>
+                                        <Style TargetType="Border">
+                                            <Setter Property="Background" Value="Cornsilk"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding ElementName=checkboxApplyMethod, Path=IsChecked}" Value="True">
+                                                    <Setter Property="Background" Value="MediumSpringGreen"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding ElementName=btnAddMethodArgs, Path=IsChecked}" Value="True">
+                                                    <Setter Property="Background" Value="RoyalBlue"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Border.Style>
+                                </Border>
+                                <ToggleButton Click="BtnAddMethodArgs_Click" Name="btnAddMethodArgs" Grid.Column="0" Grid.Row="0" Margin="3" BorderThickness="0" Background="Transparent">
+                                    <Image Name="image" Source="{DynamicResource Plus}" />
+                                    
+                                </ToggleButton>
+                                <TextBlock Name="MethodName" Grid.Column="1" Grid.Row="0" Text="{Binding Name}" FontWeight="SemiBold" FontSize="25" HorizontalAlignment="Left" VerticalAlignment="Center" />
+                                <CheckBox Name="checkboxApplyMethod" Checked="CheckboxApplyMethod_Checked" Grid.Column="2" Grid.Row="0" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="5"/>
+                                <Button Name="btnDelMethod" Click="BtnDelMethod_Click" Grid.Column="3" Grid.Row="0" Margin="3" BorderThickness="0" Background="Transparent">
+                                    <Image Source="Images/cross.png" Width="Auto" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,1,0,1" MaxWidth="35"/>
+                                </Button>
+
+                                <Grid Grid.Row="1" Grid.ColumnSpan="4" Background="Cornsilk">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="*"/>
+                                        <RowDefinition Height="*"/>
+                                    </Grid.RowDefinitions>
+                                    <TextBlock Grid.Row="0" Text="Description: " FontWeight="Bold"/>
+                                    <TextBlock FontWeight="SemiBold" Grid.Row="1" Text="{Binding Description}" VerticalAlignment="Center" HorizontalAlignment="Left"/>
+                                   
+                                    <Grid.Style>
+                                        <Style TargetType="Grid">
+                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding ElementName=MethodName,Path=IsMouseOver}" Value="True">
+                                                    <Setter Property="Visibility" Value="Visible"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Grid.Style>
+                                </Grid>
+                            </Grid>
+                           
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+
             </Grid>
         </Grid>
         <!--Start of Main Area-->
-        <Grid ShowGridLines="True" Grid.Column="1" Grid.Row="1">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="11*"/>
-            </Grid.RowDefinitions>
-            <Grid ShowGridLines="True" Grid.Row="0">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="6*"/>
-                </Grid.ColumnDefinitions>
-                <Button Content="Tab Rename file" Grid.Column="0"/>
-                <Button Content="Tab Rename folder" Grid.Column="1"/>
-            </Grid>
-            <Grid ShowGridLines="True" Grid.Row="1">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="6*"/>
-                </Grid.ColumnDefinitions>
-                <Button Content="Add" Grid.Column="0"/>
-                <Button Content="Arrows" Grid.Column="1"/>
-            </Grid>
-            <ListView Grid.Row="2" >
-                <ListView.View>
-                    <GridView>
-                        <GridViewColumn Header="Filename" Width="150"/>
-                        <GridViewColumn Header="New Filename" Width="150"/>
-                        <GridViewColumn Header="Path" Width="200"/>
-                        <GridViewColumn Header="Error" Width="300"/>
-                    </GridView>
-                </ListView.View>
-            </ListView>
-        </Grid>
+        <TabControl Background="#E0E0E0" Grid.Column="1" Grid.Row="1">
+            <TabItem>
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="Images/file.png" Width="42"/>
+                        <TextBlock Text="Rename Files" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </TabItem.Header>
+
+                <DockPanel>
+                    <ToolBarTray DockPanel.Dock="Top">
+                        <ToolBar>
+                            <Button Click="btnAddFiles">
+                                <StackPanel Orientation="Horizontal">
+                                    <Image Source="Images/add.png" Width="35"/>
+                                    <TextBlock Text="Add Files" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                                </StackPanel>
+                            </Button>
+                            <Separator/>
+                            <Button Click="btnPreviewFileName">
+                                <StackPanel Orientation="Horizontal">
+                                    <Image Source="Images/preview.png" Width="35"/>
+                                    <TextBlock Text="Preview" FontWeight="SemiBold" VerticalAlignment="Center" Margin="5,0,0,0"/>
+                                </StackPanel>
+                            </Button>
+                            <Separator/>
+                            <StackPanel Orientation="Horizontal">
+                                <Button Click="btnUpFilenamePosition" Background="Transparent" BorderThickness="0">
+                                    <Image Source="Images/up.png" Width="30"/>
+                                </Button>
+                                <Button Click="btnUpMostFilenamePosition" Background="Transparent" BorderThickness="0">
+                                    <Image Source="Images/up_most.png" Width="30"/>
+                                </Button>
+                                <Button Click="btnDownFilenamePosition" Background="Transparent" BorderThickness="0">
+                                    <Image Source="Images/down.png" Width="30"/>
+                                </Button>
+                                <Button Click="btnDownMostFilenamePosition" Background="Transparent" BorderThickness="0">
+                                    <Image Source="Images/down_most.png" Width="30"/>
+                                </Button>
+                                <Separator/>
+                                
+                            </StackPanel>
+                        </ToolBar>
+                    </ToolBarTray>
+                    <ListView Name="FileNameListView" DockPanel.Dock="Bottom" ItemContainerStyle="{DynamicResource MyItemContainerStyle}">
+                        <ListView.View>
+                            <GridView >
+                                <GridViewColumn Header="Filename" Width="150" CellTemplate="{DynamicResource MyDataTemplate}"
+                                                DisplayMemberBinding="{Binding Value}"/>
+                                <GridViewColumn Header="New Filename" Width="150" CellTemplate="{DynamicResource MyDataTemplate}"
+                                                DisplayMemberBinding="{Binding PreviewFilename}"/>
+                                <GridViewColumn Header="Path" Width="200" CellTemplate="{DynamicResource MyDataTemplate}"
+                                                DisplayMemberBinding="{Binding Path}"/>
+                                <GridViewColumn Header="Error" Width="300" CellTemplate="{DynamicResource MyDataTemplate}"
+                                                DisplayMemberBinding="{Binding Error}"/>
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
+                </DockPanel>
+            </TabItem>
+            <TabItem >
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="Images/folder.png" Width="40"
+                               RenderOptions.BitmapScalingMode="HighQuality"/>
+                        <TextBlock Text="Rename Folders" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </TabItem.Header>
+                <DockPanel>
+                    <ToolBarTray DockPanel.Dock="Top">
+                        <ToolBar>
+                            <Button Click="btnAddFolder">
+                                <StackPanel Orientation="Horizontal">
+                                    <Image Source="Images/add_folder.png" Width="40"/>
+                                    <TextBlock Text="Add Folder" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                                </StackPanel>
+                            </Button>
+                            <Separator/>
+                            <Button Click="btnPreviewFolderName">
+                                <StackPanel Orientation="Horizontal">
+                                    <Image Source="Images/preview.png" Width="35"/>
+                                    <TextBlock Text="Preview" FontWeight="SemiBold" VerticalAlignment="Center" Margin="5,0,0,0"/>
+                                </StackPanel>
+                            </Button>
+                            <Separator/>
+                            <StackPanel Orientation="Horizontal">
+                                <Button Click="btnUpFoldernamePosition" Background="Transparent" BorderThickness="0">
+                                    <Image Source="Images/up.png" Width="30"/>
+                                </Button>
+                                <Button Click="btnUpMostFoldernamePosition" Background="Transparent" BorderThickness="0">
+                                    <Image Source="Images/up_most.png" Width="30"/>
+                                </Button>
+                                <Button Click="btnDownFoldernamePosition" Background="Transparent" BorderThickness="0">
+                                    <Image Source="Images/down.png" Width="30"/>
+                                </Button>
+                                <Button Click="btnDownMostFoldernamePosition" Background="Transparent" BorderThickness="0">
+                                    <Image Source="Images/down_most.png" Width="30"/>
+                                </Button>
+                                <Separator/>
+                                
+                            </StackPanel>
+                        </ToolBar>
+                    </ToolBarTray>
+                    <ListView Name="FolderNameListView" DockPanel.Dock="Bottom" VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch">
+                        <ListView.View>
+                            <GridView>
+                                
+                                <GridViewColumn Header="Folder Name" Width="150"
+                                                DisplayMemberBinding="{Binding Value}"/>
+                                <GridViewColumn Header="New Folder Name" Width="150"
+                                                DisplayMemberBinding="{Binding PreviewFoldername}"/>
+                                <GridViewColumn Header="Path" Width="200"
+                                                DisplayMemberBinding="{Binding Path}"/>
+                                <GridViewColumn Header="Error" Width="300"
+                                                DisplayMemberBinding="{Binding Error}"/>
+                            </GridView>
+                        </ListView.View>
+                        
+                    </ListView>
+                </DockPanel>
+            </TabItem>
+        </TabControl>
     </Grid>
 </Window>
